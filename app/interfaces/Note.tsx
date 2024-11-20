@@ -4,7 +4,7 @@ interface Note {
     title: string;
     content: string;
     createdAt: Date;
-    tags: Tag[];
+    tags: string[];
     id: number;
 }
 

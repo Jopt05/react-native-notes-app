@@ -1,13 +1,13 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import Input from '../components/Input'
+import SearchInput from '../components/SearchInput'
 import { Ionicons } from '@expo/vector-icons'
 import FloatingButton from '../components/FloatingButton'
 
 function Tags() {
   return (
     <View style={styles.container}>
-        <Input />
+        <SearchInput />
         <View style={styles.bodyContainer}>
           <View style={styles.tagContainer}>
             <Text style={styles.tagName}>Tag</Text>

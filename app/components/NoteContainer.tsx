@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import NoteTagChip from './NoteTagChip';
 import Note from '../interfaces/Note';
+import { router } from 'expo-router';
 
 type Props = {
   note: Note;
@@ -9,20 +10,28 @@ type Props = {
 }
 
 function NoteContainer({ note, index }: Props) {
+
+  const redirectToEdit = () => {
+    router.push(`/(tabs)/${note.id}`)
+  }
+
   return (
-    <View style={styles.noteContainer}>
+    <TouchableOpacity 
+      onPress={redirectToEdit}
+      style={styles.noteContainer}
+    >
         <Text style={styles.noteTitle}>
             {note.title}
         </Text>
         <View style={styles.noteTagsContainer}>
             {note.tags.map((tag, index) => (
-             <NoteTagChip tag={tag.name} index={index} />   
+             <NoteTagChip tag={tag} index={index} />   
             ))}
         </View>
         <Text style={styles.notesCreatedDate}>
          {  note.createdAt.toISOString() }
         </Text>
-    </View>
+    </TouchableOpacity>
   )
 }
 

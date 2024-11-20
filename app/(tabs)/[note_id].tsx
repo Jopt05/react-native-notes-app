@@ -1,14 +1,44 @@
 import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
-import React from 'react'
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { router, useLocalSearchParams } from 'expo-router'
+import React, { useContext, useEffect, useState } from 'react'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native'
+import Input from '../components/Input';
+import { NotesContext } from '../context/NotesContext';
+import Note from '../interfaces/Note';
 
 function NoteScreen() {
+  const { addNote, notesState } = useContext( NotesContext );
+  const { note_id } = useLocalSearchParams();
+
+  const [title, setTitle] = useState("");
+  const [noteText, setNoteText] = useState("");
+  const [tagList, setTagList] = useState<string[]>([]);
 
   const goBack = () => {
     router.back()
   }
 
+  const handleSubmit = () => {
+    let { notes } = notesState;
+    if( note_id != 'null' ) {
+    } else {
+      const note: Note = {
+        content: noteText,
+        createdAt: new Date(),
+        title,
+        id: Math.round( Math.random() * 1000 ),
+        tags: ['Hola']
+      }
+      console.log("Añadido")
+      addNote(note)
+    }
+  }
+
+  useEffect(() => {
+    console.log({notesState})
+  }, [notesState])
+  
+  
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -17,20 +47,39 @@ function NoteScreen() {
           <Text style={styles.headerBackText}>Go Back</Text>
         </TouchableOpacity>
         <View style={styles.headerRightSide}>
-          <Ionicons name='trash-outline' size={24} color={'red'} />
+          <Ionicons 
+            name='trash-outline' 
+            size={24} 
+            color={'red'} 
+            style={{
+              ...(note_id != 'null') && styles.hidden
+            }}
+          />
           <Ionicons name='pencil' size={24} color={'black'} />
           <Text style={styles.headerRightSideCancel}>
             Cancel
           </Text>
-          <Text style={styles.headerRightSideSave}>
-            Save Note
-          </Text>
+          <TouchableOpacity 
+            onPress={handleSubmit}
+            style={{
+              ...(!noteText || !title) && styles.hidden
+            }}
+          >
+            <Text
+              style={styles.headerRightSideSave}
+            >
+              Save Note
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>
-          React Performance Optimization
-        </Text>
+        <Input 
+          onChange={(value) => setTitle(value)} 
+          customStyle={styles.titleText} 
+          placeholder='Title here' 
+          multiline
+        />
         <View style={styles.titleDetailContainer}>
           <Ionicons name='pricetag-outline' size={16} color={'gray'} />
           <Text style={styles.titleDetailText}>
@@ -40,19 +89,34 @@ function NoteScreen() {
             Dev, React
           </Text>
         </View>
-        <View style={styles.titleDetailContainer}>
+        <View 
+          style={styles.titleDetailContainer}
+        >
           <Ionicons name='time-outline' size={16} color={'gray'} />
-          <Text style={styles.titleDetailText}>
+          <Text 
+            style={styles.titleDetailText}
+          >
             Last edited
           </Text>
-          <Text style={styles.titleDetailTextRight}>
+          <Text style={{
+            ...styles.titleDetailTextRight,
+            ...(note_id != 'null') && styles.hidden
+          }}>
             Fecha
           </Text>
         </View>
       </View>
-      <TextInput 
+      <View>
+        {/* <FlatList 
+          horizontal
+          data={["Hola", "Dos", "Uno"]}
+        /> */}
+      </View>
+      <Input 
         multiline
-        style={styles.noteText}
+        customStyle={styles.noteText}
+        placeholder='Note here'
+        onChange={(value) => setNoteText(value)}
       />
     </View>
   )
@@ -105,8 +169,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 28,
-    fontWeight: 'bold',
-    lineHeight: 38
+    fontWeight: 'bold'
   },
   titleDetailContainer: {
     flexDirection: 'row',
@@ -123,6 +186,9 @@ const styles = StyleSheet.create({
   noteText: {
     fontSize: 16,
     marginTop: 10
+  },
+  hidden: {
+    opacity: 0
   }
 })
 

@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, TextInput, FlatList } from "react-native";
 import NoteContainer from "../components/NoteContainer";
 import FloatingButton from "../components/FloatingButton";
-import Input from "../components/Input";
+import SearchInput from "../components/SearchInput";
 import { router } from "expo-router";
 import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
@@ -18,7 +18,7 @@ export default function Index() {
       style={styles.container}
     >
       <View style={styles.bodyContainer}>
-        <Input />
+        <SearchInput />
         <View style={styles.searchTermContainer}>
           <Text style={styles.searchTermText}>
             All notes matching "Dev" are shown below
@@ -29,6 +29,7 @@ export default function Index() {
           renderItem={({ item, index }) => (
             <NoteContainer
               note={item}
+              key={index}
               index={index}
             />
           )}
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
   searchTermText: {
     fontSize: 15,
     textAlign: 'center',
-    marginVertical: 10
+    marginVertical: 10,
+    opacity: 0
   },
 });

@@ -1,8 +1,8 @@
 import { NotesState } from "../context/NotesContext";
-import Tag from "../interfaces/Tag";
+import Note from "../interfaces/Note";
 
 type NoteAction = 
-{ type: 'addNote', payload: { id: number; title: string; content: string; date: Date; tags: Tag[]; } };
+{ type: 'addNote', payload: Note };
 
 export const NotesReducer = (state: NotesState, action: NoteAction): NotesState => {
     switch (action.type) {
@@ -15,7 +15,7 @@ export const NotesReducer = (state: NotesState, action: NoteAction): NotesState 
                         id: action.payload.id,
                         title: action.payload.title,
                         content: action.payload.content,
-                        createdAt: action.payload.date,
+                        createdAt: action.payload.createdAt,
                         tags: action.payload.tags
                     }
                 ]

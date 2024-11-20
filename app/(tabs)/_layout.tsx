@@ -31,7 +31,7 @@ function TabLayout() {
             }}
         />
         <Tabs.Screen 
-            name='[note-id]' 
+            name='[note_id]' 
             options={{
                 href: null
             }}
