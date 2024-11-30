@@ -1,12 +1,17 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
+import Input from './Input'
 
 function SearchInput() {
   return (
     <View style={styles.searchContainer}>
         <Ionicons size={24} color={'red'} name="search-outline" />
-        <TextInput style={styles.searchInput} />
+        <Input 
+          placeholder='Search here'
+          editable={true}
+          onChange={(value) => }
+        />
     </View>
   )
 }

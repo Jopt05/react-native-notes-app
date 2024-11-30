@@ -3,11 +3,13 @@ import NoteContainer from "../components/NoteContainer";
 import FloatingButton from "../components/FloatingButton";
 import SearchInput from "../components/SearchInput";
 import { router } from "expo-router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { NotesContext } from "../context/NotesContext";
 
 export default function Index() {
   const { notesState } = useContext(NotesContext);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const redirectToNote = (noteId?: number) => {
     router.push(`/(tabs)/${noteId || null}`)
