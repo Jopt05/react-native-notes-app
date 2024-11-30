@@ -9,8 +9,8 @@ import { NotesContext } from "../context/NotesContext";
 export default function Index() {
   const { notesState } = useContext(NotesContext);
 
-  const redirectToNote = () => {
-    router.push('/(tabs)/null')
+  const redirectToNote = (noteId?: number) => {
+    router.push(`/(tabs)/${noteId || null}`)
   }
 
   return (
@@ -35,7 +35,7 @@ export default function Index() {
           )}
         />
       </View>
-      <FloatingButton onPress={redirectToNote} />
+      <FloatingButton onPress={() => redirectToNote()} />
     </View>
   );
 }

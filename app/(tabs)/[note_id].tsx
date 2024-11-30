@@ -5,40 +5,95 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'r
 import Input from '../components/Input';
 import { NotesContext } from '../context/NotesContext';
 import Note from '../interfaces/Note';
+import NoteTagChip from '../components/NoteTagChip';
+
+type NoteData = {
+  title: string;
+  content: string;
+  tags: string[];
+  createdAt?: Date;
+  id?: number
+}
 
 function NoteScreen() {
-  const { addNote, notesState } = useContext( NotesContext );
+  const { addNote, notesState, updateNote, deleteNote } = useContext( NotesContext );
   const { note_id } = useLocalSearchParams();
 
-  const [title, setTitle] = useState("");
-  const [noteText, setNoteText] = useState("");
-  const [tagList, setTagList] = useState<string[]>([]);
+  const [isEditing, setIsEditing] = useState(true);
+  const [noteData, setNoteData] = useState<NoteData>({
+    title: '',
+    content: '',
+    tags: []
+  });
 
   const goBack = () => {
     router.back()
   }
 
+  const handleDelete = () => {
+    deleteNote(Number(note_id))
+    goBack();
+  }
+
   const handleSubmit = () => {
-    let { notes } = notesState;
     if( note_id != 'null' ) {
+      updateNote(noteData.title, noteData.content, noteData.tags, Number(note_id));
+      setIsEditing(false);
     } else {
-      const note: Note = {
-        content: noteText,
+      const id = Math.round( Math.random() * 1000 );
+      addNote({
+        content: noteData.content,
         createdAt: new Date(),
-        title,
-        id: Math.round( Math.random() * 1000 ),
-        tags: ['Hola']
-      }
-      console.log("Añadido")
-      addNote(note)
+        title: noteData.title,
+        id,
+        tags: noteData.tags
+      })
+      setNoteData({
+        ...noteData,
+        id
+      })
+    }
+    setIsEditing(false);
+  }
+
+  const handleAddTag = (value: string) => {
+    if( noteData.tags.includes(value) ) {
+      setNoteData({
+        ...noteData,
+        tags: noteData.tags.filter( tag => tag != value )
+      })
+    } else {
+      setNoteData({
+        ...noteData,
+        tags: [...noteData.tags, value]
+      })
     }
   }
 
   useEffect(() => {
-    console.log({notesState})
-  }, [notesState])
+    console.log(note_id);
+    if( note_id != 'null' ) {
+      setIsEditing(false);
+      const note = notesState.notes.find( note => note.id == Number(note_id) )
+      if( note ) {
+        setNoteData({
+          title: note.title,
+          content: note.content,
+          tags: note.tags,
+          createdAt: note.createdAt
+        })
+      }
+    } else {
+      setIsEditing(true);
+      setNoteData({
+        title: '',
+        content: '',
+        tags: []
+      })
+    }
+  }, [note_id])
   
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -47,22 +102,50 @@ function NoteScreen() {
           <Text style={styles.headerBackText}>Go Back</Text>
         </TouchableOpacity>
         <View style={styles.headerRightSide}>
-          <Ionicons 
-            name='trash-outline' 
-            size={24} 
-            color={'red'} 
+          <TouchableOpacity
+            onPress={handleDelete}
+          >
+            <Ionicons 
+              name='trash-outline' 
+              size={24} 
+              color={'red'} 
+              style={{
+                ...(note_id == 'null') && styles.hidden
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setIsEditing(true)}
+          >
+            <Ionicons 
+              style={{
+                ...(isEditing) && styles.hidden
+              }}
+              name='pencil' 
+              size={24} 
+              color={'black'} 
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
             style={{
-              ...(note_id != 'null') && styles.hidden
+              ...(!isEditing) && styles.hidden
             }}
-          />
-          <Ionicons name='pencil' size={24} color={'black'} />
-          <Text style={styles.headerRightSideCancel}>
-            Cancel
-          </Text>
+            onPress={() => setIsEditing(false)}
+          >
+            <Text 
+              style={styles.headerRightSideCancel}
+            >
+              Cancel
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity 
             onPress={handleSubmit}
             style={{
-              ...(!noteText || !title) && styles.hidden
+              ...(
+                !noteData.content || 
+                !noteData.title || 
+                noteData.tags.length == 0 ||
+                !isEditing) && styles.hidden
             }}
           >
             <Text
@@ -75,7 +158,9 @@ function NoteScreen() {
       </View>
       <View style={styles.titleContainer}>
         <Input 
-          onChange={(value) => setTitle(value)} 
+          inputValue={noteData.title}
+          editable={isEditing}
+          onChange={(value) => setNoteData({...noteData, title: value})} 
           customStyle={styles.titleText} 
           placeholder='Title here' 
           multiline
@@ -86,7 +171,7 @@ function NoteScreen() {
             Tags
           </Text>
           <Text style={styles.titleDetailTextRight}>
-            Dev, React
+            { noteData.tags.join(", ") }
           </Text>
         </View>
         <View 
@@ -98,25 +183,40 @@ function NoteScreen() {
           >
             Last edited
           </Text>
-          <Text style={{
-            ...styles.titleDetailTextRight,
-            ...(note_id != 'null') && styles.hidden
-          }}>
-            Fecha
-          </Text>
+          {
+            (noteData.createdAt) && (
+              <Text style={{
+                ...styles.titleDetailTextRight
+              }}>
+                { noteData.createdAt.toISOString() }
+              </Text>
+            )
+          }
         </View>
       </View>
       <View>
-        {/* <FlatList 
+        <FlatList 
           horizontal
-          data={["Hola", "Dos", "Uno"]}
-        /> */}
+          style={styles.tagsContainer}
+          data={["Hola", "Dos", "Uno", "Tres", "Cuatro", "Cinco", "Seis"]}
+          renderItem={({ item, index }) => (
+            <NoteTagChip 
+              disabled={!isEditing}
+              tag={item}
+              key={index}
+              isSelected={noteData.tags.includes(item)}
+              onPress={(value) => handleAddTag(value)}
+            />
+          )}
+        />
       </View>
       <Input 
+        inputValue={noteData.content}
+        editable={isEditing}
         multiline
         customStyle={styles.noteText}
         placeholder='Note here'
-        onChange={(value) => setNoteText(value)}
+        onChange={(value) => setNoteData({...noteData, content: value})}
       />
     </View>
   )
@@ -185,10 +285,15 @@ const styles = StyleSheet.create({
   },
   noteText: {
     fontSize: 16,
-    marginTop: 10
+    marginTop: 5
   },
   hidden: {
     opacity: 0
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    paddingVertical: 8
   }
 })
 

@@ -1,18 +1,39 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 type Props = {
     tag: string;
-    index: number;
+    onPress?: (value: string) => void;
+    isSelected?: boolean;
+    disabled?: boolean;
 }
 
-function NoteTagChip({ tag, index }: Props) {
+function NoteTagChip({ tag, onPress, isSelected, disabled }: Props) {
   return (
-    <View key={index} style={styles.notesChip}>
-        <Text style={styles.notesChipText}>
-            {tag}
-        </Text>
-    </View>
+      (onPress) 
+      ? (
+        <TouchableOpacity
+          disabled={disabled}
+          onPress={() => onPress(tag)} 
+          style={{
+            ...styles.notesChip,
+            ...(isSelected) && styles.selected,
+            marginHorizontal: 5
+          }}
+        >
+            <Text style={styles.notesChipText}>
+                {tag}
+            </Text>
+        </TouchableOpacity>
+      )
+      : (
+        <View style={styles.notesChip}>
+            <Text style={styles.notesChipText}>
+                {tag}
+            </Text>
+        </View>
+      )
+    
   )
 }
 
@@ -27,6 +48,9 @@ const styles = StyleSheet.create({
   notesChipText: {
     fontSize: 14,
   },
+  selected: {
+    backgroundColor: '#b0b4bd'
+  }
 })
 
 export default NoteTagChip

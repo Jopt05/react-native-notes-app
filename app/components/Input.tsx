@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 
 type Props = {
@@ -6,9 +6,11 @@ type Props = {
     multiline?: boolean;
     customStyle?: {};
     onChange: (value: string) => void;
+    editable?: boolean;
+    inputValue: string;
 }
 
-function Input({ placeholder, multiline, customStyle, onChange }: Props) {
+function Input({ placeholder, multiline, customStyle, onChange, editable, inputValue }: Props) {
 
     const [value, setValue] = useState("");
 
@@ -17,9 +19,14 @@ function Input({ placeholder, multiline, customStyle, onChange }: Props) {
         onChange(value);
     }
 
+    useEffect(() => {
+        setValue(inputValue);
+    }, [inputValue])
+
   return (
     <View style={styles.container}>
-        <TextInput 
+        <TextInput
+        editable={editable}
         onChangeText={handleChange}
         placeholder={placeholder}
         value={value}

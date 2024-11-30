@@ -13,6 +13,8 @@ export const notesInitialState: NotesState = {
 export interface NotesContextProps {
     notesState: NotesState;
     addNote: (note: Note) => void;
+    updateNote: (title: string, content: string, tags: string[], id: number) => void; 
+    deleteNote: (id: number) => void;
 }
 
 export const NotesContext = createContext({} as NotesContextProps);
@@ -28,10 +30,33 @@ export const NotesProvider = ({children}: any) => {
         })
     }
 
+    const updateNote = (title: string, content: string, tags: string[], id: number) => {
+        dispatch({
+            type: 'updateNote',
+            payload: {
+                title,
+                content,
+                tags,
+                id
+            }
+        })
+    }
+
+    const deleteNote = (id: number) => {
+        dispatch({
+            type: 'deleteNote',
+            payload: {
+                id
+            }
+        })
+    }
+
     return (
         <NotesContext.Provider value={{
             notesState: notesState,
-            addNote
+            addNote,
+            updateNote,
+            deleteNote
         }}>
             {children}
         </NotesContext.Provider>

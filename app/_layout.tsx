@@ -1,6 +1,7 @@
 import { Stack } from "expo-router";
 import Header from "./components/shared/Header";
 import { NotesProvider } from "./context/NotesContext";
+import { TagProvider } from "./context/TagsContext";
 
 export default function RootLayout() {
   return (
@@ -18,7 +19,9 @@ export default function RootLayout() {
 const AppState = ({children}: any) => {
   return (
     <NotesProvider>
-      {children}
+      <TagProvider>
+        {children}
+      </TagProvider>
     </NotesProvider>
   )
 }
