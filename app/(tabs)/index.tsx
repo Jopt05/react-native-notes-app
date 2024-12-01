@@ -6,9 +6,12 @@ import { useContext, useEffect, useState } from "react";
 import { NotesContext } from "../context/NotesContext";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "../components/Input";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Index() {
+
   const { notesState } = useContext(NotesContext);
+  const { theme } = useContext( ThemeContext );
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -19,23 +22,36 @@ export default function Index() {
 
   return (
     <View
-      style={styles.container}
+      style={{
+        ...styles.container,
+        backgroundColor: theme.colors.card
+      }}
     >
       <View style={styles.bodyContainer}>
-        <View style={styles.searchContainer}>
-            <Ionicons size={24} color={'red'} name="search-outline" />
+        <View style={{
+          ...styles.searchContainer,
+          borderColor: theme.colors.border,
+          backgroundColor: theme.colors.background
+        }}>
+            <Ionicons size={24} color={ theme.dark ? 'white' : 'black' } name="search-outline" />
             <Input 
               placeholder='Search here'
               editable={true}
               onChange={(value => setSearchTerm(value))} 
               inputValue={searchTerm}  
+              customStyle={{
+                color: theme.colors.text
+              }}
             />
         </View>
         <View style={{
           ...styles.searchTermContainer,
           ...( searchTerm == "" ) && styles.hidden
         }}>
-          <Text style={styles.searchTermText}>
+          <Text style={{
+            ...styles.searchTermText,
+            color: theme.colors.text
+          }}>
             All notes matching "{ searchTerm }" are shown below
           </Text>
         </View>

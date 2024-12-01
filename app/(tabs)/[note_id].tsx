@@ -7,6 +7,7 @@ import { NotesContext } from '../context/NotesContext';
 import Note from '../interfaces/Note';
 import NoteTagChip from '../components/NoteTagChip';
 import { TagContext } from '../context/TagsContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 type NoteData = {
   title: string;
@@ -17,8 +18,11 @@ type NoteData = {
 }
 
 function NoteScreen() {
+
   const { addNote, notesState, updateNote, deleteNote } = useContext( NotesContext );
   const { tagState } = useContext( TagContext );
+  const { theme } = useContext(ThemeContext);
+
   const { note_id } = useLocalSearchParams();
 
   const [isEditing, setIsEditing] = useState(true);
@@ -97,11 +101,24 @@ function NoteScreen() {
   
 
   return (
-    <View style={styles.container}>
+    <View style={{
+      ...styles.container,
+      backgroundColor: theme.colors.card
+    }}>
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={goBack} style={styles.headerBackContainer}>
-          <Text style={styles.headerBackIcon}>{"<"}</Text>
-          <Text style={styles.headerBackText}>Go Back</Text>
+          <Text style={{
+            ...styles.headerBackIcon,
+            color: theme.colors.text
+          }}>
+            {"<"}
+          </Text>
+          <Text style={{
+            ...styles.headerBackText,
+            color: theme.colors.text
+          }}>
+            Go Back
+          </Text>
         </TouchableOpacity>
         <View style={styles.headerRightSide}>
           <TouchableOpacity
@@ -125,7 +142,7 @@ function NoteScreen() {
               }}
               name='pencil' 
               size={24} 
-              color={'black'} 
+              color={theme.colors.text} 
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -135,7 +152,10 @@ function NoteScreen() {
             onPress={() => setIsEditing(false)}
           >
             <Text 
-              style={styles.headerRightSideCancel}
+              style={{
+                ...styles.headerRightSideCancel,
+                color: theme.colors.text
+              }}
             >
               Cancel
             </Text>
@@ -151,7 +171,10 @@ function NoteScreen() {
             }}
           >
             <Text
-              style={styles.headerRightSideSave}
+              style={{
+                ...styles.headerRightSideSave,
+                color: theme.dark ? 'lightblue' : 'blue'
+              }}
             >
               Save Note
             </Text>
@@ -163,7 +186,10 @@ function NoteScreen() {
           inputValue={noteData.title}
           editable={isEditing}
           onChange={(value) => setNoteData({...noteData, title: value})} 
-          customStyle={styles.titleText} 
+          customStyle={{
+            ...styles.titleText,
+            color: theme.colors.text
+          }} 
           placeholder='Title here' 
           multiline
         />
@@ -172,7 +198,10 @@ function NoteScreen() {
           <Text style={styles.titleDetailText}>
             Tags
           </Text>
-          <Text style={styles.titleDetailTextRight}>
+          <Text style={{
+            ...styles.titleDetailTextRight,
+            color: theme.colors.text
+          }}>
             { noteData.tags.join(", ") }
           </Text>
         </View>
@@ -188,7 +217,8 @@ function NoteScreen() {
           {
             (noteData.createdAt) && (
               <Text style={{
-                ...styles.titleDetailTextRight
+                ...styles.titleDetailTextRight,
+                color: theme.colors.text
               }}>
                 { noteData.createdAt.toLocaleString() }
               </Text>
@@ -216,7 +246,10 @@ function NoteScreen() {
         inputValue={noteData.content}
         editable={isEditing}
         multiline
-        customStyle={styles.noteText}
+        customStyle={{
+          ...styles.noteText,
+          color: theme.colors.text
+        }}
         placeholder='Note here'
         onChange={(value) => setNoteData({...noteData, content: value})}
       />
@@ -226,7 +259,9 @@ function NoteScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20
+    flex: 1,
+    position: 'relative',
+    padding: 20
   },
   headerContainer: {
     paddingTop: 10,

@@ -4,10 +4,12 @@ import { Ionicons } from '@expo/vector-icons'
 import FloatingButton from '../components/FloatingButton'
 import Input from '../components/Input'
 import { TagContext } from '../context/TagsContext'
+import { ThemeContext } from '../context/ThemeContext'
 
 function Tags() {
 
   const { tagState, addTag, deleteTag } = useContext(TagContext);
+  const { theme } = useContext( ThemeContext );
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreatingTag, setIsCreatingTag] = useState(false);
@@ -31,14 +33,24 @@ function Tags() {
   }
 
   return (
-    <View style={styles.container}>
-        <View style={styles.searchContainer}>
-            <Ionicons size={24} color={'red'} name="search-outline" />
+    <View style={{
+      ...styles.container,
+      backgroundColor: theme.colors.card
+    }}>
+        <View style={{
+          ...styles.searchContainer,
+          backgroundColor: theme.colors.background,
+          borderColor: theme.colors.border
+        }}>
+            <Ionicons size={24} color={ theme.dark ? 'white' : 'black' } name="search-outline" />
             <Input 
               placeholder='Search here'
               editable={true}
               onChange={(value: string) => setSearchTerm(value)} 
               inputValue={searchTerm}  
+              customStyle={{
+                color: theme.colors.text
+              }}
             />
         </View>
         <View style={styles.bodyContainer}>
@@ -46,7 +58,10 @@ function Tags() {
             data={tagState.tags}
             renderItem={({ item, index }) => (
               <View key={index} style={styles.tagContainer}>
-                <Text style={styles.tagName}>{item}</Text>
+                <Text style={{
+                  ...styles.tagName,
+                  color: theme.colors.text
+                }}>{item}</Text>
                 <TouchableOpacity
                   style={styles.tagIcon}
                   onPress={() => handleDelete(item)}
@@ -63,6 +78,7 @@ function Tags() {
         </View>
         <View style={{
           ...styles.inputContainer,
+          backgroundColor: theme.colors.background,
           ...(!isCreatingTag) && styles.hidden
         }}>
           <Input
@@ -72,7 +88,8 @@ function Tags() {
             inputValue={tagName}
             placeholder='Tag name'
             customStyle={{
-              width: 20
+              width: 20,
+              color: theme.colors.text
             }}
             rightIcon={
               <TouchableOpacity
@@ -97,8 +114,7 @@ function Tags() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginHorizontal: 10,
-        marginTop: 10
+        padding: 20
     },
     title: {
         fontSize: 20,

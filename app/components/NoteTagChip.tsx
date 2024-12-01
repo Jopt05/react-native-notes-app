@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { ThemeContext } from '../context/ThemeContext';
 
 type Props = {
     tag: string;
@@ -9,6 +10,9 @@ type Props = {
 }
 
 function NoteTagChip({ tag, onPress, isSelected, disabled }: Props) {
+
+  const { theme } = useContext(ThemeContext);
+
   return (
       (onPress) 
       ? (
@@ -17,18 +21,29 @@ function NoteTagChip({ tag, onPress, isSelected, disabled }: Props) {
           onPress={() => onPress(tag)} 
           style={{
             ...styles.notesChip,
+            marginHorizontal: 5,
+            backgroundColor: theme.colors.card,
             ...(isSelected) && styles.selected,
-            marginHorizontal: 5
+            ...(isSelected && theme.dark) && styles.selectedDark
           }}
         >
-            <Text style={styles.notesChipText}>
+            <Text style={{
+              ...styles.notesChipText,
+              color: theme.colors.text
+            }}>
                 {tag}
             </Text>
         </TouchableOpacity>
       )
       : (
-        <View style={styles.notesChip}>
-            <Text style={styles.notesChipText}>
+        <View style={{
+          ...styles.notesChip,
+          backgroundColor: theme.colors.background
+        }}>
+            <Text style={{
+              ...styles.notesChipText,
+              color: theme.colors.text
+            }}>
                 {tag}
             </Text>
         </View>
@@ -50,6 +65,9 @@ const styles = StyleSheet.create({
   },
   selected: {
     backgroundColor: '#b0b4bd'
+  },
+  selectedDark: {
+    backgroundColor: '#575757'
   }
 })
 

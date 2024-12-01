@@ -5,6 +5,7 @@ import Note from '../interfaces/Note';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { NotesContext } from '../context/NotesContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 type Props = {
   note: Note;
@@ -14,6 +15,7 @@ type Props = {
 
 function NoteContainer({ note, index, hidden }: Props) {
   const { deleteNote } = useContext( NotesContext );
+  const { theme } = useContext(ThemeContext);
 
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -40,7 +42,10 @@ function NoteContainer({ note, index, hidden }: Props) {
       }}
     >
         <View style={styles.infoContainer}>
-          <Text style={styles.noteTitle}>
+          <Text style={{
+            ...styles.noteTitle,
+            color: theme.colors.text
+          }}>
               {note.title}
           </Text>
           <View style={styles.noteTagsContainer}>

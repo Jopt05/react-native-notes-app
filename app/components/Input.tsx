@@ -1,5 +1,6 @@
-import React, { RefObject, useEffect, useState } from 'react'
+import React, { RefObject, useContext, useEffect, useState } from 'react'
 import { StyleSheet, TextInput, TextStyle, View } from 'react-native'
+import { ThemeContext } from '../context/ThemeContext';
 
 type Props = {
     placeholder?: string;
@@ -25,6 +26,8 @@ function Input({
   onRef
 }: Props) {
 
+    const { theme } = useContext( ThemeContext );
+
     const [value, setValue] = useState("");
 
     const handleChange = (value: string) => {
@@ -46,6 +49,7 @@ function Input({
           placeholder={placeholder}
           value={value}
           multiline={multiline}
+          placeholderTextColor={ theme.dark ? 'lightgray' : 'black' }
           style={{
               ...styles.searchInput,
               ...customStyle,
