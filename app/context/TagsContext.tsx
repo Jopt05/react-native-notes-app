@@ -11,6 +11,8 @@ export const tagInitialState: TagState = {
 
 export interface TagContextProps {
     tagState: TagState;
+    addTag: (tagName: string) => void;
+    deleteTag: (tagName: string) => void;
 }
 
 export const TagContext = createContext({} as TagContextProps);
@@ -39,7 +41,9 @@ export const TagProvider = ({children}: any) => {
 
     return (
         <TagContext.Provider value={{
-            tagState: tagState
+            tagState: tagState,
+            addTag,
+            deleteTag
         }}>
             {children}
         </TagContext.Provider>

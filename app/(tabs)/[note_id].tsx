@@ -6,6 +6,7 @@ import Input from '../components/Input';
 import { NotesContext } from '../context/NotesContext';
 import Note from '../interfaces/Note';
 import NoteTagChip from '../components/NoteTagChip';
+import { TagContext } from '../context/TagsContext';
 
 type NoteData = {
   title: string;
@@ -17,6 +18,7 @@ type NoteData = {
 
 function NoteScreen() {
   const { addNote, notesState, updateNote, deleteNote } = useContext( NotesContext );
+  const { tagState } = useContext( TagContext );
   const { note_id } = useLocalSearchParams();
 
   const [isEditing, setIsEditing] = useState(true);
@@ -198,7 +200,7 @@ function NoteScreen() {
         <FlatList 
           horizontal
           style={styles.tagsContainer}
-          data={["Hola", "Dos", "Uno", "Tres", "Cuatro", "Cinco", "Seis"]}
+          data={tagState.tags}
           renderItem={({ item, index }) => (
             <NoteTagChip 
               disabled={!isEditing}

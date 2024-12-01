@@ -9,9 +9,10 @@ import { NotesContext } from '../context/NotesContext';
 type Props = {
   note: Note;
   index: number;
+  hidden?: boolean;
 }
 
-function NoteContainer({ note, index }: Props) {
+function NoteContainer({ note, index, hidden }: Props) {
   const { deleteNote } = useContext( NotesContext );
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -33,9 +34,12 @@ function NoteContainer({ note, index }: Props) {
     <TouchableOpacity 
       onPress={redirectToEdit}
       onLongPress={handleLongPress}
-      style={styles.noteContainer}
+      style={{
+        ...styles.noteContainer,
+        ...(hidden) && styles.hiddeNote
+      }}
     >
-        <View>
+        <View style={styles.infoContainer}>
           <Text style={styles.noteTitle}>
               {note.title}
           </Text>
@@ -71,6 +75,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingVertical: 10,
   },
+  infoContainer: {
+    flex: 1,
+  },
   noteTitle: {
     fontWeight: 'medium',
     fontSize: 28
@@ -88,6 +95,9 @@ const styles = StyleSheet.create({
   hidden: {
     opacity: 0
   },
+  hiddeNote: {
+    display: 'none'
+  }
 })
 
 export default NoteContainer

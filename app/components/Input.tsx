@@ -1,16 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, TextInput, View } from 'react-native'
+import React, { RefObject, useEffect, useState } from 'react'
+import { StyleSheet, TextInput, TextStyle, View } from 'react-native'
 
 type Props = {
     placeholder?: string;
     multiline?: boolean;
-    customStyle?: {};
+    customStyle?: TextStyle;
     onChange: (value: string) => void;
     editable?: boolean;
     inputValue: string;
+    rightIcon?: React.JSX.Element;
+    onSubmit?: () => void;
+    onRef?: RefObject<TextInput> | null | undefined;
 }
 
-function Input({ placeholder, multiline, customStyle, onChange, editable, inputValue }: Props) {
+function Input({ 
+  placeholder, 
+  multiline, 
+  customStyle, 
+  onChange, 
+  editable, 
+  inputValue,  
+  rightIcon,
+  onSubmit,
+  onRef
+}: Props) {
 
     const [value, setValue] = useState("");
 
@@ -26,15 +39,23 @@ function Input({ placeholder, multiline, customStyle, onChange, editable, inputV
   return (
     <View style={styles.container}>
         <TextInput
-        editable={editable}
-        onChangeText={handleChange}
-        placeholder={placeholder}
-        value={value}
-        multiline={multiline}
-        style={{
-            ...styles.searchInput,
-            ...customStyle,
-        }} />
+          ref={onRef}
+          onSubmitEditing={onSubmit}
+          editable={editable}
+          onChangeText={handleChange}
+          placeholder={placeholder}
+          value={value}
+          multiline={multiline}
+          style={{
+              ...styles.searchInput,
+              ...customStyle,
+          }} 
+        />
+        {
+          (rightIcon) && (
+            rightIcon
+          )
+        }
     </View>
   )
 }
