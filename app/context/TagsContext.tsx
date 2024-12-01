@@ -1,5 +1,6 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { TagReducer } from "../reducer/TagReducer";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface TagState {
     tags: string[];
@@ -38,6 +39,30 @@ export const TagProvider = ({children}: any) => {
             }
         })
     }
+
+    const getTagsFromStorage = async() => {
+        const storageTags = await AsyncStorage.getItem('tags');
+        if( !storageTags || JSON.parse(storageTags)?.length == 0 ) return;
+        dispatch({
+            type: 'loadFromStorage',
+            payload: {
+                tags: JSON.parse(storageTags)
+            }
+        })
+    }
+
+    const saveTags = async() => {
+        await AsyncStorage.setItem('tags', JSON.stringify(tagState.tags));
+    }
+
+    useEffect(() => {
+        getTagsFromStorage();
+    }, [])
+    
+
+    useEffect(() => {
+        saveTags();
+    }, [tagState])
 
     return (
         <TagContext.Provider value={{

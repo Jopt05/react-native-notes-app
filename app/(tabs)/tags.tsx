@@ -15,7 +15,7 @@ function Tags() {
 
   const tagInput: RefObject<TextInput> | null | undefined = useRef(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     addTag(tagName);
     settagName("");
     setIsCreatingTag(false);
@@ -51,7 +51,11 @@ function Tags() {
                   style={styles.tagIcon}
                   onPress={() => handleDelete(item)}
                 >
-                  <Ionicons name='trash-outline' size={24} color='red' />
+                  <Ionicons 
+                    name='trash-outline' 
+                    size={24} 
+                    color='red' 
+                  />
                 </TouchableOpacity>
               </View>
             )}

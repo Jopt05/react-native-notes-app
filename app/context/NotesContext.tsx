@@ -1,6 +1,7 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import Note from "../interfaces/Note";
 import { NotesReducer } from "../reducer/NotesReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export interface NotesState {
     notes: Note[];
@@ -50,6 +51,35 @@ export const NotesProvider = ({children}: any) => {
             }
         })
     }
+
+    const getNotesFromStorage = async() => {
+        const storageNotes = await AsyncStorage.getItem('notes');
+        if( !storageNotes || JSON.parse(storageNotes)?.length == 0 ) return;
+        dispatch({
+            type: 'loadFromStorage',
+            payload: {
+                notes: JSON.parse(storageNotes).map((note: any) => {
+                    return {
+                        ...note,
+                        createdAt: new Date(note.createdAt)
+                    }
+                })
+            }
+        })
+    }
+
+    const saveNotes = async() => {
+        await AsyncStorage.setItem('notes', JSON.stringify(notesState.notes));
+    }
+
+    useEffect(() => {
+        getNotesFromStorage();
+    }, [])
+    
+
+    useEffect(() => {
+        saveNotes();
+    }, [notesState])
 
     return (
         <NotesContext.Provider value={{

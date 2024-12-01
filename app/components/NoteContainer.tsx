@@ -49,7 +49,7 @@ function NoteContainer({ note, index, hidden }: Props) {
               ))}
           </View>
           <Text style={styles.notesCreatedDate}>
-          {  note.createdAt.toISOString() }
+          {  note.createdAt.toLocaleString() }
           </Text>
         </View>
         <TouchableOpacity
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
   notesCreatedDate: {
     fontSize: 15,
-    color: '#e1e3e7',
+    color: 'gray',
     marginTop: 15
   },
   hidden: {

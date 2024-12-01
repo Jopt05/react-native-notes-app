@@ -190,7 +190,7 @@ function NoteScreen() {
               <Text style={{
                 ...styles.titleDetailTextRight
               }}>
-                { noteData.createdAt.toISOString() }
+                { noteData.createdAt.toLocaleString() }
               </Text>
             )
           }

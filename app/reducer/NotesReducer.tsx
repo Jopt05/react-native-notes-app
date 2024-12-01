@@ -4,7 +4,8 @@ import Note from "../interfaces/Note";
 type NoteAction = 
 { type: 'addNote', payload: Note } |
 { type: 'updateNote', payload: { title: string, content: string, tags: string[], id: number }} |
-{ type: 'deleteNote', payload: { id: number }};
+{ type: 'deleteNote', payload: { id: number }} |
+{ type: 'loadFromStorage', payload: { notes: Note[] } }
 
 export const NotesReducer = (state: NotesState, action: NoteAction): NotesState => {
     switch (action.type) {
@@ -44,6 +45,12 @@ export const NotesReducer = (state: NotesState, action: NoteAction): NotesState 
             return {
                 ...state,
                 notes: state.notes.filter( note => note.id != action.payload.id )
+            }
+
+        case 'loadFromStorage':
+            return {
+                ...state,
+                notes: action.payload.notes
             }
 
         default:
