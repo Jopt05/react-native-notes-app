@@ -9,9 +9,6 @@ export default function RootLayout() {
 
   return (
     <AppState>
-      <StatusBar
-        hidden={true}
-      />
       <Header />
       <Stack screenOptions={{
         headerShown: false
