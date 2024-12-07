@@ -5,6 +5,7 @@ import FloatingButton from '../components/FloatingButton'
 import Input from '../components/Input'
 import { TagContext } from '../context/TagsContext'
 import { ThemeContext } from '../context/ThemeContext'
+import SearchTerm from '../components/shared/SearchTerm'
 
 function Tags() {
 
@@ -29,7 +30,9 @@ function Tags() {
 
   const handleCreateTag = () => {
     setIsCreatingTag(true);
-    tagInput.current?.focus();
+    setTimeout(() => {
+      tagInput.current?.focus();
+    }, 500);
   }
 
   return (
@@ -53,11 +56,15 @@ function Tags() {
               }}
             />
         </View>
+        <SearchTerm searchTerm={searchTerm} />
         <View style={styles.bodyContainer}>
           <FlatList 
             data={tagState.tags}
             renderItem={({ item, index }) => (
-              <View key={index} style={styles.tagContainer}>
+              <View key={index} style={{
+                ...styles.tagContainer,
+                ...(!item.includes(searchTerm)) && styles.displayNone
+              }}>
                 <Text style={{
                   ...styles.tagName,
                   color: theme.colors.text
@@ -89,13 +96,20 @@ function Tags() {
             placeholder='Tag name'
             customStyle={{
               width: 20,
-              color: theme.colors.text
+              color: theme.colors.text,
+              paddingLeft: 15
             }}
             rightIcon={
               <TouchableOpacity
                 onPress={() => setIsCreatingTag(false)}
               >
-                <Ionicons name='close-outline' size={24} color='red' />
+                <Ionicons 
+                  style={{
+                    paddingRight: 10
+                  }}
+                  name='close-outline' 
+                  size={24} 
+                  color='red' />
               </TouchableOpacity>
             }
           />
@@ -122,8 +136,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     bodyContainer: {
-      flex: 1,
-      marginTop: 30
+      flex: 1
     },
     searchContainer: {
       flexDirection: 'row',
@@ -167,6 +180,9 @@ const styles = StyleSheet.create({
     },
     hidden: {
       opacity: 0
+    },
+    displayNone: {
+      display: 'none'
     }
 })
 

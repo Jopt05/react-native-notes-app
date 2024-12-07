@@ -7,6 +7,7 @@ import { NotesContext } from "../context/NotesContext";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import { ThemeContext } from "../context/ThemeContext";
+import SearchTerm from "../components/shared/SearchTerm";
 
 export default function Index() {
 
@@ -31,7 +32,7 @@ export default function Index() {
         <View style={{
           ...styles.searchContainer,
           borderColor: theme.colors.border,
-          backgroundColor: theme.colors.background
+          backgroundColor: theme.colors.background,
         }}>
             <Ionicons size={24} color={ theme.dark ? 'white' : 'black' } name="search-outline" />
             <Input 
@@ -44,17 +45,7 @@ export default function Index() {
               }}
             />
         </View>
-        <View style={{
-          ...styles.searchTermContainer,
-          ...( searchTerm == "" ) && styles.hidden
-        }}>
-          <Text style={{
-            ...styles.searchTermText,
-            color: theme.colors.text
-          }}>
-            All notes matching "{ searchTerm }" are shown below
-          </Text>
-        </View>
+        <SearchTerm searchTerm={searchTerm}/>
         <FlatList 
           data={notesState.notes}
           renderItem={({ item, index }) => (
@@ -86,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     marginTop: 10,
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: '#e4e3e7',
@@ -97,17 +88,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 4,
     fontSize: 15
-  },
-  searchTermContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20
-  },
-  searchTermText: {
-    fontSize: 15,
-    textAlign: 'center',
-    marginVertical: 10,
-    color: 'black'
   },
   hidden: {
     opacity: 0,
