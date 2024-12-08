@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import { ThemeContext } from "../context/ThemeContext";
 import SearchTerm from "../components/shared/SearchTerm";
+import InfoButton from "../components/shared/InfoButton";
 
 export default function Index() {
 
@@ -15,10 +16,16 @@ export default function Index() {
   const { theme } = useContext( ThemeContext );
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   const redirectToNote = (noteId: number | null) => {
     console.log({noteId})
     router.push(`/(tabs)/${noteId}`)
+  }
+
+  const handleFocus = () => {
+    console.log("Hola");
+    setIsSearching(true)
   }
 
   return (
@@ -36,6 +43,8 @@ export default function Index() {
         }}>
             <Ionicons size={24} color={ theme.dark ? 'white' : 'black' } name="search-outline" />
             <Input 
+              onFocus={() => handleFocus()}
+              onBlur={() => setIsSearching(false)}
               placeholder='Search here'
               editable={true}
               onChange={(value => setSearchTerm(value))} 
@@ -58,7 +67,14 @@ export default function Index() {
           )}
         />
       </View>
-      <FloatingButton onPress={() => redirectToNote(null)} />
+      {
+        (!isSearching) && (
+          <>
+          <InfoButton />
+          <FloatingButton onPress={() => redirectToNote(null)} />
+          </>
+        )
+      }
     </View>
   );
 }
@@ -92,4 +108,4 @@ const styles = StyleSheet.create({
   hidden: {
     opacity: 0,
   }
-});
+})

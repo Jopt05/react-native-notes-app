@@ -3,7 +3,6 @@ import Header from "./components/shared/Header";
 import { NotesProvider } from "./context/NotesContext";
 import { TagProvider } from "./context/TagsContext";
 import { CustomThemeProvider, ThemeContext } from "./context/ThemeContext";
-import { StatusBar } from "expo-status-bar";
 
 export default function RootLayout() {
 

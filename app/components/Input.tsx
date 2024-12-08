@@ -12,6 +12,8 @@ type Props = {
     rightIcon?: React.JSX.Element;
     onSubmit?: () => void;
     onRef?: RefObject<TextInput> | null | undefined;
+    onFocus?: () => void;
+    onBlur?: () => void;
 }
 
 function Input({ 
@@ -23,7 +25,9 @@ function Input({
   inputValue,  
   rightIcon,
   onSubmit,
-  onRef
+  onRef,
+  onFocus,
+  onBlur
 }: Props) {
 
     const { theme } = useContext( ThemeContext );
@@ -42,6 +46,8 @@ function Input({
   return (
     <View style={styles.container}>
         <TextInput
+          onFocus={onFocus}
+          onBlur={onBlur}
           ref={onRef}
           onSubmitEditing={onSubmit}
           editable={editable}
