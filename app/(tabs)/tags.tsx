@@ -6,10 +6,11 @@ import Input from '../components/Input'
 import { TagContext } from '../context/TagsContext'
 import { ThemeContext } from '../context/ThemeContext'
 import SearchTerm from '../components/shared/SearchTerm'
+import TagContainer from '../components/TagContainer'
 
 function Tags() {
 
-  const { tagState, addTag, deleteTag } = useContext(TagContext);
+  const { tagState, addTag } = useContext(TagContext);
   const { theme } = useContext( ThemeContext );
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,10 +23,6 @@ function Tags() {
     addTag(tagName);
     settagName("");
     setIsCreatingTag(false);
-  }
-
-  const handleDelete = (tagName: string) => {
-    deleteTag(tagName);
   }
 
   const handleCreateTag = () => {
@@ -42,14 +39,14 @@ function Tags() {
     }}>
         <View style={{
           ...styles.searchContainer,
+          borderColor: theme.colors.border,
           backgroundColor: theme.colors.background,
-          borderColor: theme.colors.border
         }}>
             <Ionicons size={24} color={ theme.dark ? 'white' : 'black' } name="search-outline" />
             <Input 
               placeholder='Search here'
               editable={true}
-              onChange={(value: string) => setSearchTerm(value)} 
+              onChange={(value => setSearchTerm(value))} 
               inputValue={searchTerm}  
               customStyle={{
                 color: theme.colors.text
@@ -61,25 +58,12 @@ function Tags() {
           <FlatList 
             data={tagState.tags}
             renderItem={({ item, index }) => (
-              <View key={index} style={{
-                ...styles.tagContainer,
-                ...(!item.includes(searchTerm)) && styles.displayNone
-              }}>
-                <Text style={{
-                  ...styles.tagName,
-                  color: theme.colors.text
-                }}>{item}</Text>
-                <TouchableOpacity
-                  style={styles.tagIcon}
-                  onPress={() => handleDelete(item)}
-                >
-                  <Ionicons 
-                    name='trash-outline' 
-                    size={24} 
-                    color='red' 
-                  />
-                </TouchableOpacity>
-              </View>
+              <TagContainer 
+                index={index}
+                key={index}
+                searchTerm={searchTerm}
+                tag={item}
+              />
             )}
           />
         </View>
@@ -128,7 +112,7 @@ function Tags() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        padding: 10
     },
     title: {
         fontSize: 20,
@@ -143,7 +127,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       borderRadius: 8,
       marginTop: 10,
-      paddingVertical: 5,
+      paddingVertical: 10,
       paddingHorizontal: 10,
       borderWidth: 1,
       borderColor: '#e4e3e7',
@@ -154,22 +138,6 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       marginLeft: 4,
       fontSize: 15
-    },
-    tagContainer: {
-      flexDirection: 'row',
-      paddingVertical: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-      alignItems: 'center'
-    },
-    tagName: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginLeft: 20
-    },
-    tagIcon: {
-      marginLeft: 'auto',
-      marginRight: 20
     },
     inputContainer: {
       flexDirection: 'row',
