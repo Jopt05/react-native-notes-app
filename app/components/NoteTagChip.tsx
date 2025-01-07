@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { ThemeContext } from '../context/ThemeContext';
+import { fonts } from '../constants/fonts';
 
 type Props = {
     tag: string;
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
   },
   notesChipText: {
     fontSize: 14,
+    fontFamily: fonts.regular
   },
   selected: {
     backgroundColor: '#b0b4bd'

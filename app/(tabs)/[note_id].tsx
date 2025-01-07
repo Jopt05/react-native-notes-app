@@ -8,6 +8,7 @@ import Note from '../interfaces/Note';
 import NoteTagChip from '../components/NoteTagChip';
 import { TagContext } from '../context/TagsContext';
 import { ThemeContext } from '../context/ThemeContext';
+import { fonts } from '../constants/fonts';
 
 type NoteData = {
   title: string;
@@ -281,7 +282,8 @@ const styles = StyleSheet.create({
   },
   headerBackText: {
     fontSize: 18,
-    marginLeft: 10
+    marginLeft: 10,
+    fontFamily: fonts.regular
   },
   headerRightSide: {
     marginLeft: 'auto',
@@ -291,11 +293,13 @@ const styles = StyleSheet.create({
   },
   headerRightSideCancel: {
     color: 'gray',
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: fonts.regular
   },
   headerRightSideSave: {
     color: 'blue',
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: fonts.regular
   },
   titleContainer: {
     marginTop: 20,
@@ -306,7 +310,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 28,
-    fontWeight: 'bold'
+    fontFamily: fonts.bold
   },
   titleDetailContainer: {
     flexDirection: 'row',
@@ -315,14 +319,17 @@ const styles = StyleSheet.create({
   },
   titleDetailText: {
     color: 'gray',
-    width: 80
+    width: 80,
+    fontFamily: fonts.regular
   },
   titleDetailTextRight: {
-    color: 'black'
+    color: 'black',
+    fontFamily: fonts.regular
   },
   noteText: {
     fontSize: 16,
-    marginTop: 5
+    marginTop: 5,
+    fontFamily: fonts.regular
   },
   hidden: {
     opacity: 0

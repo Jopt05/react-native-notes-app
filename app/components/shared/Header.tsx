@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useContext, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { setStatusBarStyle } from 'expo-status-bar'
+import { fonts } from '@/app/constants/fonts';
 
 function Header() {
 
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
       fontSize: 24,
-      fontWeight: 'bold',
+      fontFamily: fonts.bold
     },
 })
 

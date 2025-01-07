@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "react-native-notes-app",
+    "name": "Jopt05 Notes App",
     "slug": "react-native-notes-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -33,7 +33,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

@@ -2,13 +2,14 @@ import { Text, View, StyleSheet, TextInput, FlatList } from "react-native";
 import NoteContainer from "../components/NoteContainer";
 import FloatingButton from "../components/FloatingButton";
 import { router } from "expo-router";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { NotesContext } from "../context/NotesContext";
 import { Ionicons } from "@expo/vector-icons";
 import Input from "../components/Input";
 import { ThemeContext } from "../context/ThemeContext";
 import SearchTerm from "../components/shared/SearchTerm";
 import InfoButton from "../components/shared/InfoButton";
+import { fonts } from "../constants/fonts";
 
 export default function Index() {
 
@@ -69,10 +70,9 @@ export default function Index() {
       </View>
       {
         (!isSearching) && (
-          <>
-          <InfoButton />
-          <FloatingButton onPress={() => redirectToNote(null)} />
-          </>
+          <Fragment>
+            <FloatingButton onPress={() => redirectToNote(null)} />
+          </Fragment>
         )
       }
     </View>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     marginTop: 10,
+    marginBottom: 5,
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderWidth: 1,

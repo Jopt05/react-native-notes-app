@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { NotesContext } from '../context/NotesContext';
 import { ThemeContext } from '../context/ThemeContext';
+import { fonts } from '../constants/fonts';
 
 type Props = {
   note: Note;
@@ -84,7 +85,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   noteTitle: {
-    fontWeight: 'medium',
+    fontFamily: fonts.regular,
+    // fontWeight: 'medium',
     fontSize: 28
   },
   noteTagsContainer: {
@@ -95,7 +97,8 @@ const styles = StyleSheet.create({
   notesCreatedDate: {
     fontSize: 15,
     color: 'gray',
-    marginTop: 15
+    marginTop: 15,
+    fontFamily: fonts.regular
   },
   hidden: {
     opacity: 0

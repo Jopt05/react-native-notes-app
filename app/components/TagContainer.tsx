@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { ThemeContext } from '../context/ThemeContext';
 import { TagContext } from '../context/TagsContext';
+import { fonts } from '../constants/fonts';
 
 interface Props {
     tag: string;
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
       },
     tagName: {
         fontSize: 20,
-        fontWeight: 'bold',
-        marginLeft: 20
+        fontFamily: fonts.bold,
+        marginLeft: 20,
     },
     tagIcon: {
         marginLeft: 'auto',

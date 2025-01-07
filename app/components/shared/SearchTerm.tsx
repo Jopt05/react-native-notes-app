@@ -1,3 +1,4 @@
+import { fonts } from '@/app/constants/fonts';
 import { ThemeContext } from '@/app/context/ThemeContext'
 import React, { useContext } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
@@ -35,9 +36,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: 'center',
         marginVertical: 10,
-        color: 'black'
+        color: 'black',
+        fontFamily: fonts.regular
     },
     hidden: {
-      opacity: 0,
+      display: 'none'
     }
 })
