@@ -4,10 +4,13 @@ import React, { useContext, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { setStatusBarStyle } from 'expo-status-bar'
 import { fonts } from '@/app/constants/fonts';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function Header() {
 
   const { theme, setDarkTheme, setLightTheme } = useContext(ThemeContext);
+
+  const {top} = useSafeAreaInsets();
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,7 +21,8 @@ function Header() {
   return (
     <View style={{
       ...styles.headerContainer,
-      backgroundColor: theme.colors.background
+      backgroundColor: theme.colors.background,
+      paddingTop: top
     }}>
         <Text style={{
           ...styles.headerText,
